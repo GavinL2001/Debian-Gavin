@@ -11,7 +11,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 apt update
-apt install -y sudo timeshift
+apt install -y sudo nala timeshift
 
 # Create initial back-up
 timeshift --btrfs --create --comments "after initial install"
@@ -22,23 +22,26 @@ usermod -aG sudo gavin
 # Change from bookworm to sid
 sed -i 's+bookworm main +unstable main contrib +g' /etc/apt/sources.list
 
+# Get faster mirrors
+nala fetch
+
 # Updating Existing Packages
-apt update
-apt full-upgrade -y
+nala update
+nala full-upgrade -y
 
 # Create second back-up
 timeshift --btrfs --create --comments "after sid upgrade"
 
 # Add initial packages
-apt install -y gpg wget curl
+nala install -y gpg wget curl
 
 # Add Xanmod repository
 wget -qO - https://dl.xanmod.org/archive.key | gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg
 echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | tee /etc/apt/sources.list.d/xanmod-release.list
-apt update
+nala update
 
 # Installing New Packages
-apt install -y \
+nala install -y \
     autojump \
     btop \
     cron \
@@ -89,7 +92,7 @@ apt install -y \
     zsh-autosuggestions
 
 # Clean up leftover cache
-apt clean
+nala clean
 
 # Fastfetch Install
 get_latest () { 
@@ -98,7 +101,7 @@ get_latest () {
     sed -E 's/.*"([^"]+)".*/\1/'
 }
 latest=get_latest
-apt install https://github.com/fastfetch-cli/fastfetch/releases/download/$latest/fastfetch-$latest-Linux.deb
+nala install https://github.com/fastfetch-cli/fastfetch/releases/download/$latest/fastfetch-$latest-Linux.deb
 
 
 # Flatpak Install
