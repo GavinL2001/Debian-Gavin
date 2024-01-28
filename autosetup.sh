@@ -27,7 +27,6 @@ sudo apt install -y \
     git \
     grep \
     imagemagick \
-    jackd \
     kcalc \
     kde-spectacle \
     kitty \
