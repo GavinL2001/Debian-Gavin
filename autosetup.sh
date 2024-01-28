@@ -1,7 +1,7 @@
 #!/bin/bash
 
 run_as_user () {
-    sudo -u gavin
+    sudo -H -u gavin bash -c
 }
 
 # Initial user setup
@@ -27,7 +27,7 @@ usermod -aG sudo gavin
 
 # Updating Existing Packages
 nala update
-nala full-upgrade -y
+nala upgrade -y
 
 # Create second back-up
 timeshift --btrfs --create --comments "after sid upgrade"
@@ -54,8 +54,8 @@ nala install -y \
     kcalc \
     kde-spectacle \
     kitty \
-    libglx-mesa0:i386 \
-    libgl1-mesa-dri:i386 \
+    libglx-mesa0 \
+    libgl1-mesa-dri \
     libheif1 \
     linux-xanmod-edge-x64v3 \
     locate \
@@ -64,7 +64,6 @@ nala install -y \
     mesa-drm-shim \
     mesa-va-drivers \
     mesa-vulkan-drivers \
-    mesa-vulkan-drivers:i386 \
     nala \
     nano \
     network-manager \
