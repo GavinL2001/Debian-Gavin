@@ -16,14 +16,14 @@ apt install -y sudo nala timeshift
 # Create initial back-up
 timeshift --btrfs --create --comments "after initial install"
 
+# Get faster mirrors
+nala fetch --auto --https-only --debian sid
+
 #Add user to sudo group
 usermod -aG sudo gavin
 
 # Change from bookworm to sid
-sed -i 's+bookworm main +unstable main contrib +g' /etc/apt/sources.list
-
-# Get faster mirrors
-nala fetch
+# sed -i 's+bookworm main +unstable main contrib +g' /etc/apt/sources.list
 
 # Updating Existing Packages
 nala update
