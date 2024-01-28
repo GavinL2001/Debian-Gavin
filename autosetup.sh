@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Change from bookworm to sid
-sudo sed -i 's+bookworm +unstable +g' /etc/apt/sources.list
+# sudo sed -i 's+bookworm +unstable +g' /etc/apt/sources.list
 
 # Updating Existing Packages
-sudo apt update && apt full-upgrade -y &&
+# sudo apt update && apt full-upgrade -y &&
 
 # Add xanmod repository
 # sudo apt install -y wget &&
@@ -29,7 +29,6 @@ sudo apt install -y \
     kde-spectacle \
     kitty \
     libheif1 \
-    # linux-xanmod-edge-x64v3 \
     locate \
     lutris \
     lxpolkit \
