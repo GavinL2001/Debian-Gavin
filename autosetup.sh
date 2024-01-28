@@ -7,10 +7,10 @@ sudo sed -i 's+bookworm +unstable +g' /etc/apt/sources.list
 sudo apt update && apt full-upgrade -y &&
 
 # Add xanmod repository
-sudo apt install -y wget &&
-wget -qO - https://dl.xanmod.org/archive.key | sudo gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg &&
-sudo echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-release.list &&
-sudo apt update &&
+# sudo apt install -y wget &&
+# wget -qO - https://dl.xanmod.org/archive.key | sudo gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg &&
+# sudo echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-release.list &&
+# sudo apt update &&
 
 # Installing New Packages
 sudo apt install -y \
@@ -29,7 +29,7 @@ sudo apt install -y \
     kde-spectacle \
     kitty \
     libheif1 \
-    linux-xanmod-edge-x64v3 \
+    # linux-xanmod-edge-x64v3 \
     locate \
     lutris \
     lxpolkit \
@@ -39,6 +39,7 @@ sudo apt install -y \
     mesa-vulkan-drivers \
     nala \
     nano \
+    neofetch \
     network-manager \
     nmtui \
     openssh-client \
@@ -72,13 +73,13 @@ sudo apt install -y \
     zsh-autosuggestions &&
 
 # Fastfetch Install
-get_latest () { 
-    curl --silent "https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest" |
-    grep '"tag_name":' |
-    sed -E 's/.*"([^"]+)".*/\1/'
-}
-latest=$(get_latest)
-apt install https://github.com/fastfetch-cli/fastfetch/releases/download/$latest/fastfetch-$latest-Linux.deb &&
+# get_latest () { 
+#     curl --silent "https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest" |
+#     grep '"tag_name":' |
+#     sed -E 's/.*"([^"]+)".*/\1/'
+# }
+# latest=$(get_latest)
+# apt install https://github.com/fastfetch-cli/fastfetch/releases/download/$latest/fastfetch-$latest-Linux.deb &&
 
 
 # Flatpak Install
