@@ -115,15 +115,15 @@ run_as_user flatpak install --user -y flathub \
 ufw enable
 run_as_user chsh -s $(which zsh)
 
+# Create second back-up
+run_as_user timeshift --btrfs --create --comments "pre-sid upgrade"
+
 # Get sid mirrors
 nala fetch --auto --non-free --https-only --debian sid -y
 
 # Updating Existing Packages
 nala update
 nala upgrade -y
-
-# Create second back-up
-run_as_user timeshift --btrfs --create --comments "after sid upgrade"
 
 # Create post-install back-up
 run_as_user timeshift --btrfs --create --comments "after installation"
