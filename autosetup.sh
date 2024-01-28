@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# Change from bookworm to sid
+sudo sed -i 's+bookworm +unstable +g' /etc/apt/sources.list
+
 # Updating Existing Packages
-sudo apt update && apt upgrade -y &&
+sudo apt update && apt full-upgrade -y &&
 
 # Add xanmod repository
 sudo apt install -y wget &&
@@ -15,7 +18,6 @@ sudo apt install -y \
     btop \
     cat \
     cron \
-    curl \
     flatpak \
     gamemode \
     gamescope \
@@ -70,7 +72,7 @@ sudo apt install -y \
     zsh-autosuggestions &&
 
 # Fastfetch Install
-get_latest_version() { 
+function get_latest_version() { 
     curl --silent "https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest" |
     grep '"tag_name":' |
     sed -E 's/.*"([^"]+)".*/\1/'
