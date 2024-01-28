@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# Set username
+user=gavin
+
 run_as_user () {
-    sudo -H -u gavin bash -c
+    sudo -H -u $user bash -c
 }
 
 # Initial user setup
@@ -10,27 +13,15 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
+# Install basic packages
 apt update
 apt install -y sudo nala timeshift
-
-# Create initial back-up
-timeshift --btrfs --create --comments "after initial install"
-
-# Get faster mirrors
-nala fetch --auto --non-free --https-only --debian sid -y
 
 #Add user to sudo group
 usermod -aG sudo gavin
 
-# Change from bookworm to sid
-# sed -i 's+bookworm main +unstable main contrib +g' /etc/apt/sources.list
-
-# Updating Existing Packages
-nala update
-nala upgrade -y
-
-# Create second back-up
-timeshift --btrfs --create --comments "after sid upgrade"
+# Create initial back-up
+run_as_user timeshift --btrfs --create --comments "after initial install"
 
 # Add initial packages
 nala install -y gpg wget curl
@@ -38,18 +29,19 @@ nala install -y gpg wget curl
 # Add Xanmod repository
 wget -qO - https://dl.xanmod.org/archive.key | gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg
 echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | tee /etc/apt/sources.list.d/xanmod-release.list
+
+# Get faster mirrors
+nala fetch --auto --non-free --https-only --debian sid -y
 nala update
 
 # Installing New Packages
 nala install -y \
     autojump \
     btop \
-    cron \
     flatpak \
     gamemode \
     gamescope \
     git \
-    grep \
     imagemagick \
     kcalc \
     kde-spectacle \
@@ -64,8 +56,6 @@ nala install -y \
     mesa-drm-shim \
     mesa-va-drivers \
     mesa-vulkan-drivers \
-    nala \
-    nano \
     network-manager \
     openssh-client \
     pavucontrol-qt \
@@ -77,10 +67,8 @@ nala install -y \
     qemu-utils \
     qimgv \
     radeontop \
-    rsync \
     sddm \
     steam-installer \
-    timeshift \
     tldr \
     trash-cli \
     ufw \
@@ -99,9 +87,8 @@ get_latest () {
     grep '"tag_name":' |
     sed -E 's/.*"([^"]+)".*/\1/'
 }
-latest=get_latest
+latest=$(get_latest)
 nala install https://github.com/fastfetch-cli/fastfetch/releases/download/$latest/fastfetch-$latest-Linux.deb
-
 
 # Flatpak Install
 run_as_user flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
@@ -124,15 +111,21 @@ run_as_user flatpak install --user -y flathub \
     one.ablaze.floorp \
     net.davidotek.pupgui2
 
-# Create post-install back-up
-timeshift --btrfs --create --comments "after installing packages"
-
 # Post-install Things
 ufw enable
-# ln -s $HOME/floorp/floorp-bin /usr/bin
 run_as_user chsh -s $(which zsh)
 
-printf "Initial setup completed!\nPlease install Hyprland using this script here:\nhttps://github.com/JaKooLit/Debian-Hyprland\n"
+# Get sid mirrors
+nala fetch --auto --non-free --https-only --debian sid -y
 
-run_as_user git clone --depth=1 https://github.com/JaKooLit/Debian-Hyprland.git $HOME/
-chmod +x $HOME/Debian-Hyprland/install.sh
+# Updating Existing Packages
+nala update
+nala upgrade -y
+
+# Create second back-up
+run_as_user timeshift --btrfs --create --comments "after sid upgrade"
+
+# Create post-install back-up
+run_as_user timeshift --btrfs --create --comments "after installation"
+
+printf "Initial setup completed!\nPlease install Hyprland using this script here:\nhttps://github.com/JaKooLit/Debian-Hyprland\n"
