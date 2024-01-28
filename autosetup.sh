@@ -7,16 +7,19 @@
 # sudo apt update && apt full-upgrade -y &&
 
 # Add xanmod repository
-# sudo apt install -y wget &&
-# wget -qO - https://dl.xanmod.org/archive.key | sudo gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg &&
-# sudo echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-release.list &&
-# sudo apt update &&
+sudo apt install -y wget &&
+sudo wget -qO - https://dl.xanmod.org/archive.key | sudo gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg &&
+sudo echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-release.list &&
+sudo apt update &&
+
+# Add Lutris repository
+sudo echo "deb [signed-by=/etc/apt/keyrings/lutris.gpg] https://download.opensuse.org/repositories/home:/strycore/Debian_12/ ./" | sudo tee /etc/apt/sources.list.d/lutris.list > /dev/null
+sudo wget -q -O- https://download.opensuse.org/repositories/home:/strycore/Debian_12/Release.key | gpg --dearmor | sudo tee /etc/apt/keyrings/lutris.gpg > /dev/null
 
 # Installing New Packages
 sudo apt install -y \
     autojump \
     btop \
-    cat \
     cron \
     flatpak \
     gamemode \
@@ -28,19 +31,21 @@ sudo apt install -y \
     kcalc \
     kde-spectacle \
     kitty \
+    libglx-mesa0:i386 \
+    libgl1-mesa-dri:i386 \
     libheif1 \
+    linux-xanmod-edge-x64v3 \
     locate \
     lutris \
     lxpolkit \
-    mesa \
     mesa-drm-shim \
     mesa-va-drivers \
     mesa-vulkan-drivers \
+    mesa-vulkan-drivers:i386 \
     nala \
     nano \
     neofetch \
     network-manager \
-    nmtui \
     openssh-client \
     pavucontrol-qt \
     pcmanfm \
@@ -57,7 +62,7 @@ sudo apt install -y \
     radeontop \
     rsync \
     sddm \
-    steam \
+    steam-installer \
     timeshift \
     tldr \
     trash-cli \
