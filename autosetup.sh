@@ -1,23 +1,44 @@
 #!/bin/bash
 
+run_as_user () {
+    sudo -u gavin
+}
+
+# Initial user setup
+if [[ $EUID -ne 0 ]]; then
+  echo "You must be the root user to run this script, please login as root" 2>&1
+  exit 1
+fi
+
+apt update
+apt install -y sudo timeshift
+
+# Create initial back-up
+run_as_user timeshift --btrfs --create --comments "after initial install"
+
+#Add user to sudo group
+usermod -aG gavin sudo
+
 # Change from bookworm to sid
-# sudo sed -i 's+bookworm +unstable +g' /etc/apt/sources.list
+sed -i 's+bookworm main +unstable main contrib +g' /etc/apt/sources.list
 
 # Updating Existing Packages
-# sudo apt update && apt full-upgrade -y &&
+apt update
+apt full-upgrade -y
 
-# Add xanmod repository
-sudo apt install -y gpg wget &&
-wget -qO - https://dl.xanmod.org/archive.key | sudo gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg &&
-echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-release.list &&
-sudo apt update &&
+# Create second back-up
+timeshift --btrfs --create --comments "after sid upgrade"
 
-# Add Lutris repository
-echo "deb [signed-by=/etc/apt/keyrings/lutris.gpg] https://download.opensuse.org/repositories/home:/strycore/Debian_12/ ./" | sudo tee /etc/apt/sources.list.d/lutris.list > /dev/null
-wget -q -O- https://download.opensuse.org/repositories/home:/strycore/Debian_12/Release.key | gpg --dearmor | sudo tee /etc/apt/keyrings/lutris.gpg > /dev/null
+# Add initial packages
+apt install -y gpg wget curl
+
+# Add Xanmod repository
+wget -qO - https://dl.xanmod.org/archive.key | gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg
+echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | tee /etc/apt/sources.list.d/xanmod-release.list
+apt update
 
 # Installing New Packages
-sudo apt install -y \
+apt install -y \
     autojump \
     btop \
     cron \
@@ -43,7 +64,6 @@ sudo apt install -y \
     mesa-vulkan-drivers:i386 \
     nala \
     nano \
-    neofetch \
     network-manager \
     openssh-client \
     pavucontrol-qt \
@@ -62,28 +82,28 @@ sudo apt install -y \
     tldr \
     trash-cli \
     ufw \
-    wayland-protocols \
-    wayland-utils \
     winetricks \
     wireguard \
     wireguard-tools \
-    xwayland \
     zsh \
-    zsh-autosuggestions &&
+    zsh-autosuggestions
+
+# Clean up leftover cache
+apt clean
 
 # Fastfetch Install
-# get_latest () { 
-#     curl --silent "https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest" |
-#     grep '"tag_name":' |
-#     sed -E 's/.*"([^"]+)".*/\1/'
-# }
-# latest=$(get_latest)
-# apt install https://github.com/fastfetch-cli/fastfetch/releases/download/$latest/fastfetch-$latest-Linux.deb &&
+get_latest () { 
+    curl --silent "https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest" |
+    grep '"tag_name":' |
+    sed -E 's/.*"([^"]+)".*/\1/'
+}
+latest=get_latest
+apt install https://github.com/fastfetch-cli/fastfetch/releases/download/$latest/fastfetch-$latest-Linux.deb
 
 
 # Flatpak Install
-flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo &&
-flatpak install --user -y flathub \
+run_as_user flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+run_as_user flatpak install --user -y flathub \
     com.bitwarden.desktop \
     com.chatterino.chatterino \
     com.discordapp.Discord \
@@ -100,12 +120,17 @@ flatpak install --user -y flathub \
     us.zoom.Zoom \
     org.libreoffice.LibreOffice \
     one.ablaze.floorp \
-    net.davidotek.pupgui2 &&
+    net.davidotek.pupgui2
+
+# Create post-install back-up
+run_as_user timeshift --btrfs --create --comments "after installing packages"
 
 # Post-install Things
-timeshift --btrfs --create --comments "after initial install" &&
-sudo ufw enable &&
-# ln -s $HOME/floorp/floorp-bin /usr/bin &&
-chsh -s $(which zsh) &&
+ufw enable
+# ln -s $HOME/floorp/floorp-bin /usr/bin
+run_as_user chsh -s $(which zsh)
 
-printf "Initial setup completed!\nInstall Hyprland using this script here:\nhttps://github.com/JaKooLit/Debian-Hyprland\n"
+printf "Initial setup completed!\nPlease install Hyprland using this script here:\nhttps://github.com/JaKooLit/Debian-Hyprland\n"
+
+run_as_user git clone --depth=1 https://github.com/JaKooLit/Debian-Hyprland.git $HOME/
+chmod +x $HOME/Debian-Hyprland/install.sh
