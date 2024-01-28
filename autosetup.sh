@@ -123,7 +123,7 @@ run_as_user flatpak install --user -y flathub \
     net.davidotek.pupgui2
 
 # Create post-install back-up
-run_as_user timeshift --btrfs --create --comments "after installing packages"
+timeshift --btrfs --create --comments "after installing packages"
 
 # Post-install Things
 ufw enable
