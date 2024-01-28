@@ -72,7 +72,7 @@ sudo apt install -y \
     zsh-autosuggestions &&
 
 # Fastfetch Install
-function get_latest_version() { 
+function get_latest_version () { 
     curl --silent "https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest" |
     grep '"tag_name":' |
     sed -E 's/.*"([^"]+)".*/\1/'
