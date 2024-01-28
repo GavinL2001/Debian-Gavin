@@ -14,10 +14,10 @@ apt update
 apt install -y sudo timeshift
 
 # Create initial back-up
-run_as_user timeshift --btrfs --create --comments "after initial install"
+timeshift --btrfs --create --comments "after initial install"
 
 #Add user to sudo group
-usermod -aG gavin sudo
+usermod -aG sudo gavin
 
 # Change from bookworm to sid
 sed -i 's+bookworm main +unstable main contrib +g' /etc/apt/sources.list
