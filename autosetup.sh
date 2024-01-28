@@ -50,9 +50,6 @@ sudo apt install -y \
     pavucontrol-qt \
     pcmanfm \
     pipewire \
-    pipewire-audio \
-    pipewire-jack \
-    pipewire-pulse \
     pipx \
     protontricks \
     puddletag \
