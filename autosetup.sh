@@ -7,7 +7,7 @@
 # sudo apt update && apt full-upgrade -y &&
 
 # Add xanmod repository
-sudo apt install -y wget &&
+sudo apt install -y gpg wget &&
 wget -qO - https://dl.xanmod.org/archive.key | sudo gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg &&
 echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | sudo tee /etc/apt/sources.list.d/xanmod-release.list &&
 sudo apt update &&
@@ -56,7 +56,6 @@ sudo apt install -y \
     pipx \
     protontricks \
     puddletag \
-    pulseaudio \
     qemu-utils \
     qimgv \
     radeontop \
