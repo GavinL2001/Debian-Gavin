@@ -22,6 +22,9 @@ apt install -y sudo nala timeshift
 #Add user to sudo group
 usermod -aG sudo gavin
 
+# Fix debian root directory subvolume name for timeshift backups
+sed -i 's+@rootfs+@+g' /etc/fstab
+
 # Create initial back-up
 timeshift --btrfs --create --comments "after initial install"
 
