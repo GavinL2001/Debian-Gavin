@@ -23,7 +23,7 @@ apt install -y sudo nala timeshift
 usermod -aG sudo gavin
 
 # Create initial back-up
-run_as_user timeshift --btrfs --create --comments "after initial install"
+timeshift --btrfs --create --comments "after initial install"
 
 # Get faster mirrors
 nala fetch --auto --non-free --https-only -y
