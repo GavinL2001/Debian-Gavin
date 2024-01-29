@@ -17,7 +17,7 @@ fi
 
 # Install basic packages
 apt update
-apt install -y sudo nala timeshift
+apt install -y sudo nala timeshift gpg
 
 #Add user to sudo group
 usermod -aG sudo gavin
@@ -32,11 +32,8 @@ timeshift --btrfs --create --comments "after initial install"
 nala fetch --auto --non-free --https-only -y
 nala update
 
-# Add initial packages
-nala install -y gpg wget curl
-
 # Add Xanmod repository
-wget -qO - https://dl.xanmod.org/archive.key | gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg
+curl -s https://dl.xanmod.org/archive.key | gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg
 echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | tee /etc/apt/sources.list.d/xanmod-release.list
 
 # Installing New Packages
@@ -58,7 +55,6 @@ nala install -y \
     locate \
     lutris \
     lxpolkit \
-    mesa-drm-shim \
     mesa-va-drivers \
     mesa-vulkan-drivers \
     network-manager \
@@ -77,6 +73,7 @@ nala install -y \
     tldr \
     trash-cli \
     ufw \
+    wget \
     winetricks \
     wireguard \
     wireguard-tools \
@@ -136,4 +133,4 @@ timeshift --btrfs --create --comments "after installation"
 printf "Initial setup completed!\nPlease install Hyprland using this script here:\nhttps://github.com/JaKooLit/Debian-Hyprland\n"
 printf "Log file saved at /home/$user/debian-installer.log\n"
 
-) 2>&1) | tee -a /home/$user/debian-installer.log
+) 3>&1) | tee -a /home/$user/debian-installer.log
