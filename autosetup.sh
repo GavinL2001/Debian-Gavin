@@ -1,5 +1,7 @@
 #!/bin/bash
+set -e
 
+((
 # Set username
 user=gavin
 
@@ -23,16 +25,16 @@ usermod -aG sudo gavin
 # Create initial back-up
 run_as_user timeshift --btrfs --create --comments "after initial install"
 
+# Get faster mirrors
+nala fetch --auto --non-free --https-only -y
+nala update
+
 # Add initial packages
 nala install -y gpg wget curl
 
 # Add Xanmod repository
 wget -qO - https://dl.xanmod.org/archive.key | gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg
 echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | tee /etc/apt/sources.list.d/xanmod-release.list
-
-# Get faster mirrors
-nala fetch --auto --non-free --https-only --debian sid -y
-nala update
 
 # Installing New Packages
 nala install -y \
@@ -91,8 +93,8 @@ latest=$(get_latest)
 nala install https://github.com/fastfetch-cli/fastfetch/releases/download/$latest/fastfetch-$latest-Linux.deb
 
 # Flatpak Install
-run_as_user flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-run_as_user flatpak install --user -y flathub \
+run_as_user 'flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo'
+run_as_user 'flatpak install --user -y flathub \
     com.bitwarden.desktop \
     com.chatterino.chatterino \
     com.discordapp.Discord \
@@ -109,14 +111,10 @@ run_as_user flatpak install --user -y flathub \
     us.zoom.Zoom \
     org.libreoffice.LibreOffice \
     one.ablaze.floorp \
-    net.davidotek.pupgui2
-
-# Post-install Things
-ufw enable
-run_as_user chsh -s $(which zsh)
+    net.davidotek.pupgui2'
 
 # Create second back-up
-run_as_user timeshift --btrfs --create --comments "pre-sid upgrade"
+timeshift --btrfs --create --comments "pre-sid upgrade"
 
 # Get sid mirrors
 nala fetch --auto --non-free --https-only --debian sid -y
@@ -125,7 +123,14 @@ nala fetch --auto --non-free --https-only --debian sid -y
 nala update
 nala upgrade -y
 
+# Post-install Things
+ufw enable
+run_as_user 'chsh -s $(which zsh)'
+
 # Create post-install back-up
-run_as_user timeshift --btrfs --create --comments "after installation"
+timeshift --btrfs --create --comments "after installation"
 
 printf "Initial setup completed!\nPlease install Hyprland using this script here:\nhttps://github.com/JaKooLit/Debian-Hyprland\n"
+printf "Log file saved at /home/$user/debian-installer.log\n"
+
+) 2>&1) | tee -a /home/$user/debian-installer.log
