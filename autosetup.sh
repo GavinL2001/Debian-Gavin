@@ -34,7 +34,7 @@ sudo su -l $user -c '
 flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak install --user -y \
     com.bitwarden.desktop \
-    com.chatterino.chatterino \
+    com.chatterino.chatterino//stable \
     com.discordapp.Discord \
     com.github.tchx84.Flatseal \
     com.spotify.Client \
