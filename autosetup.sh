@@ -31,6 +31,7 @@ timeshift --btrfs --create --comments "after initial install"
 
 # Flatpak Install
 flatpak remote-add flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+sleep 5
 sudo su -l $user -c '
 flatpak install --user -y \
     com.bitwarden.desktop \
