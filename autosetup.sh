@@ -30,11 +30,11 @@ timeshift --btrfs --create --comments "after initial install"
 
 # Get faster mirrors
 nala fetch --auto --non-free --https-only -y
-nala update
 
 # Add Xanmod repository
 curl -s https://dl.xanmod.org/archive.key | gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg
 echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | tee /etc/apt/sources.list.d/xanmod-release.list
+nala update
 
 # Installing New Packages
 nala install -y \
