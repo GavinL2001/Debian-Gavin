@@ -6,7 +6,7 @@ user=gavin
 
 # Initial user setup
 if [[ $EUID -ne 0 ]]; then
-  echo "You must be the root user to run this script, please login as root" 2>&1
+  echo "You must login as root to run this script." 2>&1
   exit 1
 fi
 
@@ -27,6 +27,7 @@ sed -i 's+@rootfs+@+g' /etc/fstab
 timeshift --btrfs --create --comments "after initial install"
 
 # Flatpak Install
+sudo su -l $user -c '
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak install --user -y flathub \
     com.bitwarden.desktop \
@@ -46,6 +47,7 @@ flatpak install --user -y flathub \
     org.libreoffice.LibreOffice \
     one.ablaze.floorp \
     net.davidotek.pupgui2
+'
 
 # Create second back-up
 timeshift --btrfs --create --comments "pre-sid upgrade"
