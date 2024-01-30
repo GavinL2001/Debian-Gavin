@@ -30,9 +30,8 @@ sed -i 's+@rootfs+@+g' /etc/fstab
 timeshift --btrfs --create --comments "after initial install"
 
 # Flatpak Install
-flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-sleep 5
 sudo su -l $user -c '
+flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak install --user -y \
     com.bitwarden.desktop \
     com.chatterino.chatterino \
