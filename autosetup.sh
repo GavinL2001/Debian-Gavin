@@ -30,9 +30,9 @@ sed -i 's+@rootfs+@+g' /etc/fstab
 timeshift --btrfs --create --comments "after initial install"
 
 # Flatpak Install
-sudo su -l $user -c '
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-flatpak install --user -y flathub \
+sudo su -l $user -c '
+flatpak install --user -y \
     com.bitwarden.desktop \
     com.chatterino.chatterino \
     com.discordapp.Discord \
