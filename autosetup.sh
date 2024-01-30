@@ -30,15 +30,6 @@ sed -i 's+@rootfs+@+g' /etc/fstab
 # Create initial back-up
 timeshift --btrfs --create --comments "after initial install"
 
-# Fastfetch Install
-get_latest () { 
-    curl --silent "https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest" |
-    grep '"tag_name":' |
-    sed -E 's/.*"([^"]+)".*/\1/'
-}
-latest=$(get_latest)
-nala install -y https://github.com/fastfetch-cli/fastfetch/releases/download/$latest/fastfetch-$latest-Linux.deb
-
 # Flatpak Install
 run_as_user 'flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo'
 run_as_user 'flatpak install --user -y flathub \
@@ -96,6 +87,7 @@ nala install -y \
     mesa-va-drivers \
     mesa-vulkan-drivers \
     network-manager \
+    neofetch \
     openssh-client \
     pavucontrol-qt \
     pcmanfm \
