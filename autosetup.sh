@@ -50,7 +50,7 @@ flatpak install --user -y \
     org.libreoffice.LibreOffice \
     one.ablaze.floorp \
     net.davidotek.pupgui2
-' ||
+'
 
 # Create second back-up
 timeshift --btrfs --create --comments "pre-sid upgrade"
