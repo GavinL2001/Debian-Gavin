@@ -10,6 +10,9 @@ if [[ $EUID -ne 0 ]]; then
   exit 1
 fi
 
+# Activate dbus service
+systemctl start dbus
+
 # Install basic packages
 apt update
 apt install -y sudo nala timeshift gpg ufw flatpak
