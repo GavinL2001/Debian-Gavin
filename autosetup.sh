@@ -4,10 +4,6 @@ set -e
 # Set username
 user=gavin
 
-run_as_user () {
-    sudo -H -u $user bash -c
-}
-
 # Initial user setup
 if [[ $EUID -ne 0 ]]; then
   echo "You must be the root user to run this script, please login as root" 2>&1
@@ -19,7 +15,7 @@ apt update
 apt install -y sudo nala timeshift gpg ufw flatpak
 
 #Add user to sudo group
-usermod -aG sudo gavin
+usermod -aG sudo $user
 
 # Enable firewall
 ufw enable
@@ -31,8 +27,8 @@ sed -i 's+@rootfs+@+g' /etc/fstab
 timeshift --btrfs --create --comments "after initial install"
 
 # Flatpak Install
-run_as_user 'flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo'
-run_as_user 'flatpak install --user -y flathub \
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install --user -y flathub \
     com.bitwarden.desktop \
     com.chatterino.chatterino \
     com.discordapp.Discord \
@@ -49,7 +45,7 @@ run_as_user 'flatpak install --user -y flathub \
     us.zoom.Zoom \
     org.libreoffice.LibreOffice \
     one.ablaze.floorp \
-    net.davidotek.pupgui2'
+    net.davidotek.pupgui2
 
 # Create second back-up
 timeshift --btrfs --create --comments "pre-sid upgrade"
@@ -112,11 +108,8 @@ nala install -y \
 # Clean up leftover cache
 nala clean
 
-# Post-install Things
-run_as_user 'chsh -s $(which zsh)'
-
 # Create post-install back-up
 timeshift --btrfs --create --comments "after installation"
 
 printf "Initial setup completed!\nPlease install Hyprland using this script here:\nhttps://github.com/JaKooLit/Debian-Hyprland\n"
-printf "Log file saved at /home/$user/debian-installer.log\n"
+printf "Run 'chsh -s $(which zsh)' to switch to zsh\n"
