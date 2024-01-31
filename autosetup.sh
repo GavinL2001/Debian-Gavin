@@ -12,7 +12,7 @@ fi
 
 # Install basic packages
 apt update
-apt install -y sudo nala timeshift gpg ufw flatpak
+apt install -y sudo nala timeshift gpg ufw
 
 # Activate dbus service
 systemctl start dbus
@@ -26,38 +26,16 @@ ufw enable
 # Fix debian root directory subvolume name for timeshift backups
 sed -i 's+@rootfs+@+g' /etc/fstab
 
-# Create initial back-up
-timeshift --btrfs --create --comments "after initial install"
-
-# Flatpak Install
-sudo su -l $user -c '
-flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-flatpak install --user -y \
-    com.bitwarden.desktop \
-    com.chatterino.chatterino//stable \
-    com.discordapp.Discord \
-    com.github.tchx84.Flatseal \
-    com.spotify.Client \
-    com.usebottles.bottles \
-    com.vscodium.codium \
-    io.github.dweymouth.supersonic \
-    org.audacityteam.Audacity \
-    org.avidemux.Avidemux \
-    org.bleachbit.BleachBit \
-    org.gimp.GIMP \
-    org.telegram.desktop \
-    us.zoom.Zoom \
-    org.libreoffice.LibreOffice \
-    one.ablaze.floorp \
-    net.davidotek.pupgui2
-'
-
 # Create second back-up
 timeshift --btrfs --create --comments "pre-sid upgrade"
 
 # Add Xanmod repository
 curl -s https://dl.xanmod.org/archive.key | gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg
 echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | tee /etc/apt/sources.list.d/xanmod-release.list
+
+# Add Prism Launcher repository
+curl -q 'https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub' | gpg --dearmor | tee /usr/share/keyrings/prebuilt-mpr-archive-keyring.gpg 1> /dev/null
+echo "deb [signed-by=/usr/share/keyrings/prebuilt-mpr-archive-keyring.gpg] https://proget.makedeb.org prebuilt-mpr $(lsb_release -cs)" | tee /etc/apt/sources.list.d/prebuilt-mpr.list
 
 # Get sid mirrors
 nala fetch --auto --non-free --https-only --debian sid -y
@@ -66,17 +44,17 @@ nala fetch --auto --non-free --https-only --debian sid -y
 nala update
 nala upgrade -y
 
-# Installing New Packages
+# Install Packages
 nala install -y \
     autojump \
     btop \
+    flameshot \
     flatpak \
     gamemode \
     gamescope \
+    gh \
     git \
     imagemagick \
-    kcalc \
-    kde-spectacle \
     kitty \
     libglx-mesa0 \
     libgl1-mesa-dri \
@@ -94,12 +72,12 @@ nala install -y \
     pcmanfm \
     pipewire \
     pipx \
+    prismlauncher \
     protontricks \
     puddletag \
     qemu-utils \
     qimgv \
     radeontop \
-    sddm \
     steam-installer \
     tldr \
     trash-cli \
@@ -117,4 +95,5 @@ nala clean
 timeshift --btrfs --create --comments "after installation"
 
 printf "Initial setup completed!\nPlease install Hyprland using this script here:\nhttps://github.com/JaKooLit/Debian-Hyprland\n"
+printf "Run 'curl -sL https://www.gavinliddell.us/flatpak | bash' to install flatpak packages.\n"
 printf "Run 'chsh -s $(which zsh)' to switch to zsh\n"
