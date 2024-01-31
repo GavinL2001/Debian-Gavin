@@ -67,6 +67,8 @@ nala install -y \
     mesa-vulkan-drivers \
     network-manager \
     neofetch \
+    openjdk-8-jre-headless \
+    openjdk-17-jre-headless \
     openssh-client \
     pavucontrol-qt \
     pcmanfm \
