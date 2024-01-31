@@ -96,7 +96,7 @@ nala autoremove -y
 # Updating Remaining Packages
 sleep 3
 nala update
-nala upgrade -y
+nala upgrade --no-autoremove -y
 nala clean
 
 # Create post-install back-up
