@@ -32,10 +32,6 @@ timeshift --btrfs --create --comments "pre-sid upgrade"
 # Get sid mirrors
 nala fetch --auto --non-free --https-only --debian sid -y
 
-# # Updating Existing Packages
-# nala update
-# nala upgrade -y
-
 # Add Xanmod repository
 curl -s https://dl.xanmod.org/archive.key | gpg --dearmor -o /usr/share/keyrings/xanmod-archive-keyring.gpg
 echo 'deb [signed-by=/usr/share/keyrings/xanmod-archive-keyring.gpg] http://deb.xanmod.org releases main' | tee /etc/apt/sources.list.d/xanmod-release.list
@@ -96,6 +92,12 @@ nala install -y \
 # Clean up leftover cache
 nala clean
 nala autoremove -y
+
+# Updating Remaining Packages
+sleep 3
+nala update
+nala upgrade -y
+nala clean
 
 # Create post-install back-up
 timeshift --btrfs --create --comments "after installation"
