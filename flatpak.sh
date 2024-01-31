@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ $EUID -e 0 ]]; then
+if [[ $EUID = 0 ]]; then
   echo "Don't run this script as root." 2>&1
   exit 1
 fi
