@@ -62,9 +62,6 @@ nala install -y \
     linux-xanmod-edge-x64v3 \
     locate \
     lutris \
-    lxpolkit \
-    mesa-va-drivers \
-    mesa-vulkan-drivers \
     network-manager \
     neofetch \
     openjdk-8-jre-headless \
@@ -89,6 +86,10 @@ nala install -y \
     wireguard-tools \
     zsh \
     zsh-autosuggestions
+
+nala install -t bookworm -y \
+  vulkan-validationlayers-dev \
+  vulkan-validationlayers
 
 # Clean up leftover cache
 nala clean
