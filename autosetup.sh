@@ -30,6 +30,7 @@ sed -i 's+@rootfs+@+g' /etc/fstab
 timeshift --btrfs --create --comments "pre-sid upgrade"
 
 # Get sid mirrors
+sed -i 's+@bookworm +sid contrib+g' /etc/apt/sources.list
 nala fetch --auto --non-free --https-only --debian sid -y
 
 # Add Xanmod repository
