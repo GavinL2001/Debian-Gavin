@@ -7,7 +7,7 @@ fi
 
 # Install Flatpak
 sudo nala update
-sudo nala install -y sudo flatpak
+sudo nala install -y flatpak
 
 # Flatpak Packages
 flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
