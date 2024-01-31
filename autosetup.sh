@@ -44,7 +44,12 @@ nala fetch --auto --non-free --https-only --debian sid -y
 nala update
 nala upgrade -y
 
+sleep 3
+
 # Install Packages
+nala update
+nala upgrade -y
+nala autoremove -y
 nala install -y \
     autojump \
     btop \
