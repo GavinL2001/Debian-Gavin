@@ -12,23 +12,25 @@ sudo nala install -y flatpak
 # Flatpak Packages
 flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak install --user -y \
-    com.bitwarden.desktop \
-    com.chatterino.chatterino//stable \
-    com.discordapp.Discord \
-    com.github.tchx84.Flatseal \
-    com.spotify.Client \
-    com.usebottles.bottles \
-    com.vscodium.codium \
-    io.github.dweymouth.supersonic \
-    org.audacityteam.Audacity \
-    org.avidemux.Avidemux \
-    org.bleachbit.BleachBit \
-    org.gimp.GIMP \
-    org.telegram.desktop \
-    us.zoom.Zoom \
-    org.libreoffice.LibreOffice \
-    one.ablaze.floorp \
-    net.davidotek.pupgui2 \
-    org.kde.kcalc
+  com.bitwarden.desktop \
+  com.chatterino.chatterino//stable \
+  com.discordapp.Discord \
+  com.github.tchx84.Flatseal \
+  com.spotify.Client \
+  com.usebottles.bottles \
+  com.vscodium.codium \
+  io.github.dweymouth.supersonic \
+  org.audacityteam.Audacity \
+  org.avidemux.Avidemux \
+  org.bleachbit.BleachBit \
+  org.gimp.GIMP \
+  org.telegram.desktop \
+  us.zoom.Zoom \
+  org.libreoffice.LibreOffice \
+  one.ablaze.floorp \
+  net.davidotek.pupgui2 \
+  org.kde.kcalc
+
+export PATH=$PATH:/var/lib/flatpak/exports/bin:/home/gavin/.local/share/flatpak/exports/bin
 
 printf "Flatpak installation complete!"

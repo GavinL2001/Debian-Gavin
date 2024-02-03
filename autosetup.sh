@@ -46,46 +46,49 @@ sed -i 's+trixie+bookworm+g' /etc/apt/sources.list.d/prebuilt-mpr.list
 nala update
 sleep 3
 nala install -y \
-    autojump \
-    btop \
-    flameshot \
-    flatpak \
-    gamemode \
-    gamescope \
-    gh \
-    git \
-    imagemagick \
-    kitty \
-    libglx-mesa0 \
-    libgl1-mesa-dri \
-    libheif1 \
-    linux-xanmod-edge-x64v3 \
-    locate \
-    lutris \
-    network-manager \
-    neofetch \
-    openjdk-8-jre-headless \
-    openjdk-17-jre-headless \
-    openssh-client \
-    pavucontrol-qt \
-    pcmanfm \
-    pipewire \
-    pipx \
-    prismlauncher \
-    protontricks \
-    puddletag \
-    qemu-utils \
-    qimgv \
-    radeontop \
-    steam-installer \
-    tldr \
-    trash-cli \
-    wget \
-    winetricks \
-    wireguard \
-    wireguard-tools \
-    zsh \
-    zsh-autosuggestions
+  autojump \
+  btop \
+  flameshot \
+  flatpak \
+  gamemode \
+  gamescope \
+  gh \
+  git \
+  gnome-keyring \
+  imagemagick \
+  kitty \
+  libglx-mesa0 \
+  libgl1-mesa-dri \
+  libheif1 \
+  linux-xanmod-edge-x64v3 \
+  locate \
+  lutris \
+  mpd \
+  network-manager \
+  neofetch \
+  openjdk-8-jre-headless \
+  openjdk-17-jre-headless \
+  openssh-client \
+  pavucontrol-qt \
+  pcmanfm \
+  pipewire \
+  pipx \
+  prismlauncher \
+  protontricks \
+  puddletag \
+  qemu-utils \
+  qimgv \
+  radeontop \
+  steam-installer \
+  tldr \
+  trash-cli \
+  wget \
+  winetricks \
+  wireguard \
+  wireguard-tools \
+  wlr-randr \
+  zsh \
+  zsh-autosuggestions
 
 nala install -t bookworm -y \
   vulkan-validationlayers-dev \
